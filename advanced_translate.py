@@ -1,26 +1,55 @@
 import json
 import re
 
+
 def transliterate(word):
     mapping = {
-        'ph': 'ف', 'ch': 'چ', 'sh': 'ش', 'th': 'ت', 'ae': 'آ', 'oe': 'و', 'aa': 'آ',
-        'c': 'ک', 'k': 'ک', 'q': 'ک', 'x': 'کس', 'a': 'آ', 'b': 'ب', 'd': 'د',
-        'e': 'ه', 'f': 'ف', 'g': 'گ', 'h': 'ه', 'i': 'ی', 'j': 'ج', 'l': 'ل',
-        'm': 'م', 'n': 'ن', 'o': 'و', 'p': 'پ', 'r': 'ر', 's': 'س', 't': 'ت',
-        'u': 'و', 'v': 'و', 'w': 'و', 'y': 'ی', 'z': 'ز'
+        "ph": "ف",
+        "ch": "چ",
+        "sh": "ش",
+        "th": "ت",
+        "ae": "آ",
+        "oe": "و",
+        "aa": "آ",
+        "c": "ک",
+        "k": "ک",
+        "q": "ک",
+        "x": "کس",
+        "a": "آ",
+        "b": "ب",
+        "d": "د",
+        "e": "ه",
+        "f": "ف",
+        "g": "گ",
+        "h": "ه",
+        "i": "ی",
+        "j": "ج",
+        "l": "ل",
+        "m": "م",
+        "n": "ن",
+        "o": "و",
+        "p": "پ",
+        "r": "ر",
+        "s": "س",
+        "t": "ت",
+        "u": "و",
+        "v": "و",
+        "w": "و",
+        "y": "ی",
+        "z": "ز",
     }
     word = word.lower()
     res = ""
     i = 0
     while i < len(word):
-        if word[i:i+2] in ['ph', 'ch', 'sh', 'th', 'ae', 'oe', 'aa']:
-            res += mapping[word[i:i+2]]
+        if word[i : i + 2] in ["ph", "ch", "sh", "th", "ae", "oe", "aa"]:
+            res += mapping[word[i : i + 2]]
             i += 2
-        elif word[i] == 'c':
-            if i+1 < len(word) and word[i+1] in ['e', 'i', 'y']:
-                res += 'س'
+        elif word[i] == "c":
+            if i + 1 < len(word) and word[i + 1] in ["e", "i", "y"]:
+                res += "س"
             else:
-                res += 'ک'
+                res += "ک"
             i += 1
         elif word[i] in mapping:
             res += mapping[word[i]]
@@ -28,6 +57,7 @@ def transliterate(word):
         else:
             i += 1
     return res
+
 
 manual_fixes = {
     "Eatanswill": "ایتنزویل",
@@ -1035,57 +1065,38 @@ manual_fixes = {
     "girandole": "شمعدان چندشاخه",
 }
 
-def transliterate(word):
-    mapping = {
-        'ph': 'ف', 'ch': 'چ', 'sh': 'ش', 'th': 'ت', 'ae': 'آ', 'oe': 'و', 'aa': 'آ',
-        'c': 'ک', 'k': 'ک', 'q': 'ک', 'x': 'کس', 'a': 'آ', 'b': 'ب', 'd': 'د',
-        'e': 'ه', 'f': 'ف', 'g': 'گ', 'h': 'ه', 'i': 'ی', 'j': 'ج', 'l': 'ل',
-        'm': 'م', 'n': 'ن', 'o': 'و', 'p': 'پ', 'r': 'ر', 's': 'س', 't': 'ت',
-        'u': 'و', 'v': 'و', 'w': 'و', 'y': 'ی', 'z': 'ز'
-    }
-    word = word.lower()
-    res = ""
-    i = 0
-    while i < len(word):
-        if word[i:i+2] in ['ph', 'ch', 'sh', 'th', 'ae', 'oe', 'aa']:
-            res += mapping[word[i:i+2]]
-            i += 2
-        elif word[i] == 'c':
-            if i+1 < len(word) and word[i+1] in ['e', 'i', 'y']:
-                res += 'س'
-            else:
-                res += 'ک'
-            i += 1
-        elif word[i] in mapping:
-            res += mapping[word[i]]
-            i += 1
-        else:
-            i += 1
-    return res
 
 def translate_word(word):
-    if word in manual_fixes: return manual_fixes[word]
-    if word.lower() in manual_fixes: return manual_fixes[word.lower()]
-    
-    # Taxonomic suffixes
-    if word.endswith('aceae'): return transliterate(word[:-5]) + 'یان'
-    if word.endswith('idae'): return transliterate(word[:-4]) + 'ان'
-    if word.endswith('ales'): return transliterate(word[:-4]) + 'سانان'
-    if word.endswith('inae'): return transliterate(word[:-4]) + 'اینه'
-    if word.endswith('oidei'): return transliterate(word[:-5]) + 'ویدئی'
-    if word.endswith('oidea'): return transliterate(word[:-5]) + 'واران'
-    if word.endswith('iformes'): return transliterate(word[:-7]) + 'سانان'
-    
+    if word in manual_fixes:
+        return manual_fixes[word]
+    if word.lower() in manual_fixes:
+        return manual_fixes[word.lower()]
+    if word.endswith(("idae", "iforms", "aceae", "ales", "inae", "oidei", "oidea")):
+        return word
+
     return transliterate(word)
 
+
 def main():
-    with open('en2.txt', 'r', encoding='utf-8') as f:
+    import sys
+
+    fn = sys.argv[1]
+    with open(fn, "r", encoding="utf-8") as f:
         words = [line.strip() for line in f if line.strip()]
-    
-    translated = {word: translate_word(word) for word in words}
-    
-    with open('en2_translated.json', 'w', encoding='utf-8') as f:
-        json.dump(translated, f, ensure_ascii=False, indent=2)
+    nl =[]
+    for word in words:
+        if not word.endswith(("idae", "iforms", "aceae", "ales", "inae", "oidei", "oidea")):
+            nl.append(word)
+        else:
+            print(word)
+    with open('ee', "w", encoding="utf-8") as f:
+        for k in nl:
+            f.write(f'{k}\n')
+
+
+
+
+
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
+import sys
 
 from google.cloud import translate_v2 as translate
-import sys
+
 
 def test_translate():
     try:
@@ -10,6 +11,7 @@ def test_translate():
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     test_translate()
