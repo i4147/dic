@@ -46,7 +46,6 @@ def phonetic_reduce(word, is_persian=False):
             "-": "",
         }
     else:
-        
         word = word.replace("ch", "c")
         word = word.replace("sh", "s")
         word = word.replace("ph", "f")
@@ -92,11 +91,10 @@ def is_transliterated(en, fa):
     if en_p == fa_p:
         return True
 
-    
     if abs(len(en_p) - len(fa_p)) <= 2:
         if en_p in fa_p or fa_p in en_p:
             return True
-        
+
         matches = 0
         i, j = 0, 0
         while i < len(en_p) and j < len(fa_p):
@@ -126,7 +124,6 @@ def main():
     with open(input_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    
     if os.path.exists(trans_file):
         print(f"Loading existing {trans_file}...")
         with open(trans_file, "r", encoding="utf-8") as f:

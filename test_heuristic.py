@@ -5,7 +5,6 @@ import re
 def phonetic_reduce(word, is_persian=False):
     word = word.lower()
     if is_persian:
-        
         groups = {
             "ب": "b",
             "پ": "p",
@@ -35,7 +34,6 @@ def phonetic_reduce(word, is_persian=False):
             "ن": "n",
             "ح": "h",
             "ه": "h",
-            
             "و": "",
             "ی": "",
             "ا": "",
@@ -47,9 +45,8 @@ def phonetic_reduce(word, is_persian=False):
             "-": "",
         }
     else:
-        
         word = re.sub(r"[aeiouywh]", "", word)
-        
+
         groups = {
             "b": "b",
             "p": "p",
@@ -88,18 +85,14 @@ def is_transliterated(en, fa):
     if not en_p or not fa_p:
         return False
 
-    
     if en_p == fa_p:
         return True
 
-    
     if abs(len(en_p) - len(fa_p)) <= 1:
-        
         if en_p in fa_p or fa_p in en_p:
             return True
 
     return False
-
 
 
 test_data = {

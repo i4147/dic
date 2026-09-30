@@ -1083,19 +1083,15 @@ def main():
     fn = sys.argv[1]
     with open(fn, "r", encoding="utf-8") as f:
         words = [line.strip() for line in f if line.strip()]
-    nl =[]
+    nl = []
     for word in words:
         if not word.endswith(("idae", "iforms", "aceae", "ales", "inae", "oidei", "oidea")):
             nl.append(word)
         else:
             print(word)
-    with open('ee', "w", encoding="utf-8") as f:
+    with open("ee", "w", encoding="utf-8") as f:
         for k in nl:
-            f.write(f'{k}\n')
-
-
-
-
+            f.write(f"{k}\n")
 
 
 if __name__ == "__main__":

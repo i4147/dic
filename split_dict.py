@@ -1,8 +1,9 @@
 import json
 import sys
-fn=sys.argv[1]
 
-with open(fn, 'r', encoding='utf-8') as f:
+fn = sys.argv[1]
+
+with open(fn, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 
@@ -16,11 +17,11 @@ for key, translations in data.items():
         remaining[key] = translations
 
 
-with open('uniq.json', 'w', encoding='utf-8') as f:
+with open("uniq.json", "w", encoding="utf-8") as f:
     json.dump(uniq, f, ensure_ascii=False, indent=2)
 
 
-with open('dictionary_remaining.json', 'w', encoding='utf-8') as f:
+with open("dictionary_remaining.json", "w", encoding="utf-8") as f:
     json.dump(remaining, f, ensure_ascii=False, indent=2)
 
 print(f"Moved {len(uniq)} records to uniq.json")
