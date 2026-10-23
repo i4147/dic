@@ -25,3 +25,5 @@ undo/
 .ropeproject/
 .mypy_cache/
 
+
+/arena/pending.json

@@ -1,0 +1,21 @@
+{
+  "complete": false,
+  "input_entries": 259730,
+  "skipped_lines": 443,
+  "processed": 50,
+  "pending_count": 259680,
+  "counts": {
+    "abbr.json": 0,
+    "names.json": 0,
+    "places.json": 0,
+    "verbs.json": 30,
+    "dic.json": 20,
+    "tl.json": 0,
+    "persian.json": 50,
+    "failed.txt": 0
+  },
+  "transliterations": [],
+  "review": [],
+  "conflicts": [],
+  "collisions": []
+}
