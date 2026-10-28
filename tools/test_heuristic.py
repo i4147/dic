@@ -1,5 +1,7 @@
 import json
 import re
+
+
 def phonetic_reduce(word, is_persian=False):
     word = word.lower()
     if is_persian:
@@ -71,6 +73,8 @@ def phonetic_reduce(word, is_persian=False):
             if val:
                 res.append(val)
     return "".join(res)
+
+
 def is_transliterated(en, fa):
     en_p = phonetic_reduce(en, is_persian=False)
     fa_p = phonetic_reduce(fa, is_persian=True)
@@ -82,6 +86,8 @@ def is_transliterated(en, fa):
         if en_p in fa_p or fa_p in en_p:
             return True
     return False
+
+
 test_data = {
     "Aaronic": "هارونیک",
     "Aaronical": "هارونیکال",

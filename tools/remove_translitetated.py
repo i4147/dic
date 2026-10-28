@@ -3,10 +3,13 @@ Detect and remove transliterated Persian translations from an English-Persian di
 Saves removed items to a separate JSON file for reference.
 Usage: python script.py <dictionary.json>
 """
+
 import sys
 import json
 import re
 from pathlib import Path
+
+
 def is_transliterated(persian_text: str) -> bool:
     """
     Detect if a Persian text is just a transliteration (phonetic copy) of English.
@@ -34,6 +37,8 @@ def is_transliterated(persian_text: str) -> bool:
     if any(c in english_chars for c in text):
         return True
     return False
+
+
 def process_dictionary(filepath: Path):
     """Process the dictionary file and remove transliterated entries."""
     try:
@@ -81,11 +86,15 @@ def process_dictionary(filepath: Path):
         print("-" * 60)
     else:
         print("No transliterated entries found.")
+
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python script.py <dictionary.json>")
         sys.exit(1)
     filepath = Path(sys.argv[1])
     process_dictionary(filepath)
+
+
 if __name__ == "__main__":
     main()

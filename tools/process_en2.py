@@ -1,4 +1,6 @@
 import json
+
+
 def main():
     with open("en2.txt", "r", encoding="utf-8") as f:
         en2_words = [line.strip() for line in f if line.strip()]
@@ -23,5 +25,7 @@ def main():
     with open("en2_missing.txt", "w", encoding="utf-8") as f:
         for word in missing:
             f.write(word + "\n")
+
+
 if __name__ == "__main__":
     main()

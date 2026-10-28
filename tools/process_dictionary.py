@@ -1,6 +1,8 @@
 import json
 import os
 import re
+
+
 def phonetic_reduce(word, is_persian=False):
     word = word.lower()
     if is_persian:
@@ -75,6 +77,8 @@ def phonetic_reduce(word, is_persian=False):
             if val:
                 res.append(val)
     return "".join(res)
+
+
 def is_transliterated(en, fa):
     en_p = phonetic_reduce(en, is_persian=False)
     fa_p = phonetic_reduce(fa, is_persian=True)
@@ -99,6 +103,8 @@ def is_transliterated(en, fa):
         if matches >= max(len(en_p), len(fa_p)) - 2:
             return True
     return False
+
+
 def main():
     input_file = "enfa.json"
     trans_file = "t.json"
@@ -137,5 +143,7 @@ def main():
     print(
         f"Summary: New Transliterated: {new_count}, Total Transliterated: {len(transliterated)}, Remaining: {len(remaining)}"
     )
+
+
 if __name__ == "__main__":
     main()

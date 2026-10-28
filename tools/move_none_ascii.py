@@ -8,8 +8,11 @@ Reads <input_file>, keeps only lines that are pure ASCII lowercase (a-z),
 moves every other line into mixed.txt, and rewrites the input file with
 just the pure-lowercase lines.
 """
+
 import sys
 from pathlib import Path
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         print(f"usage: {sys.argv[0]} <input_file>", file=sys.stderr)
@@ -34,5 +37,7 @@ def main() -> None:
         fh.writelines(pure)
     print(f"kept  {len(pure):>6} pure-lowercase lines in {src}")
     print(f"moved {len(mixed):>6} mixed / non-lowercase lines to {mixed_path}")
+
+
 if __name__ == "__main__":
     main()

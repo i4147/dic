@@ -1,5 +1,7 @@
 import json
 import re
+
+
 def transliterate(word):
     mapping = {
         "ph": "ف",
@@ -55,6 +57,8 @@ def transliterate(word):
         else:
             i += 1
     return res
+
+
 manual_fixes = {
     "Eatanswill": "ایتنزویل",
     "eatberry": "توت خوراکی",
@@ -1060,6 +1064,8 @@ manual_fixes = {
     "gipsyweed": "سیزاب",
     "girandole": "شمعدان چندشاخه",
 }
+
+
 def translate_word(word):
     if word in manual_fixes:
         return manual_fixes[word]
@@ -1068,8 +1074,11 @@ def translate_word(word):
     if word.endswith(("idae", "iforms", "aceae", "ales", "inae", "oidei", "oidea")):
         return word
     return transliterate(word)
+
+
 def main():
     import sys
+
     fn = sys.argv[1]
     with open(fn, "r", encoding="utf-8") as f:
         words = [line.strip() for line in f if line.strip()]
@@ -1082,5 +1091,7 @@ def main():
     with open("ee", "w", encoding="utf-8") as f:
         for k in nl:
             f.write(f"{k}\n")
+
+
 if __name__ == "__main__":
     main()

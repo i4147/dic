@@ -1,5 +1,6 @@
 import json
 import sys
+
 fn = sys.argv[1]
 with open(fn, "r", encoding="utf-8") as f:
     data = json.load(f)

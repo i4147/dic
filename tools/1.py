@@ -2,6 +2,8 @@ import json
 import re
 import sys
 from pathlib import Path
+
+
 def transliterate(word):
     mapping = {
         "ph": "ف",
@@ -57,6 +59,8 @@ def transliterate(word):
         else:
             i += 1
     return res
+
+
 common = {
     "Aves": "پرندگان",
     "aardvark": "مورچه‌خوار",
@@ -167,6 +171,8 @@ common = {
     "Droseraceae": "شبنمیان",
     "Dytiscidae": "سوسک‌های غواص",
 }
+
+
 def translate_word(word):
     if word in common:
         return common[word]
@@ -185,6 +191,8 @@ def translate_word(word):
     if word.endswith("iformes"):
         return transliterate(word[:-7]) + "شکلان"
     return transliterate(word)
+
+
 def main():
     with open("en1.txt", "r", encoding="utf-8") as f:
         words = [line.strip() for line in f if line.strip()]
@@ -194,5 +202,7 @@ def main():
         sys.exit(1)
     with open("en5.json", "w", encoding="utf-8") as f:
         json.dump(translated, f, ensure_ascii=False, indent=2)
+
+
 if __name__ == "__main__":
     main()

@@ -1,5 +1,7 @@
 import sys
 import json
+
+
 def is_transliteration(s):
     persian_specific = set("گچپژ")
     common_persian = set("شخزآذطظضثقفعهح")
@@ -7,6 +9,8 @@ def is_transliteration(s):
         return False
     count = sum(1 for c in s if c in common_persian)
     return count == 0
+
+
 def clean_entry(translations):
     if not isinstance(translations, list):
         return translations
@@ -14,6 +18,8 @@ def clean_entry(translations):
     if not kept:
         kept = translations
     return kept
+
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python clean_dict.py <dict.json>")
@@ -25,5 +31,7 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(cleaned, f, ensure_ascii=False, indent=2)
     print(f"Updated {path}")
+
+
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 import sys
 import json
 import re
+
 NATIVE_PERSIAN_LETTERS = set("گچپژ")
 COMMON_PERSIAN_LETTERS = set("شخزآذطظضثقفعهحغ")
 TRANSLIT_PRONE_LETTERS = set("انرسهویکبتملدصزف")
@@ -78,6 +79,8 @@ PERSIAN_TO_LATIN = {
     "ه": "h",
     "ی": "y",
 }
+
+
 def _score_persian(s: str) -> int:
     score = 0
     for c in s:
@@ -90,16 +93,22 @@ def _score_persian(s: str) -> int:
         else:
             score += 1
     return score
+
+
 def _translit_ratio(s: str) -> float:
     letters = [c for c in s if "\u0600" <= c <= "\u06ff"]
     if not letters:
         return 0.0
     return sum(1 for c in letters if c in TRANSLIT_PRONE_LETTERS) / len(letters)
+
+
 def _matches_translit_suffix(s: str) -> bool:
     for suf in TRANSLIT_SUFFIXES:
         if s.endswith(suf):
             return True
     return False
+
+
 def _matches_latin_pattern(s: str, latin_word: str = "") -> bool:
     if not latin_word:
         return False
@@ -113,6 +122,8 @@ def _matches_latin_pattern(s: str, latin_word: str = "") -> bool:
         if overlap / max(len(latin_clean), 1) > 0.6:
             return True
     return False
+
+
 def is_transliteration(s: str, latin_word: str = "") -> bool:
     if not s:
         return True
@@ -129,6 +140,8 @@ def is_transliteration(s: str, latin_word: str = "") -> bool:
     if suffix_hit and score / length < 1.0:
         return True
     return False
+
+
 def clean_entry(key: str, translations):
     if not isinstance(translations, list):
         return translations
@@ -136,6 +149,8 @@ def clean_entry(key: str, translations):
     if not kept:
         kept = translations
     return kept
+
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python clean_dict.py <dict.json>")
@@ -147,5 +162,7 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(cleaned, f, ensure_ascii=False, indent=2)
     print(f"Updated {path}")
+
+
 if __name__ == "__main__":
     main()

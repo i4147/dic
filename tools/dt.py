@@ -15,10 +15,12 @@ Outputs (next to input file):
     transliterated.json  - only the transliterated pairs
     cleaned.json         - original minus transliterated pairs
 """
+
 import json
 import re
 import sys
 from pathlib import Path
+
 EN_TO_FA = {
     "a": ["ا", "آ"],
     "e": ["ا", "ه", "ی"],
@@ -51,19 +53,29 @@ PERSIAN_LETTERS = set("اآبپتثجچحخدذرزژسشصضطظعغفقکگل�
 RARE_IN_TRANSLIT = set("ثحذصضطظعغ")
 LATIN_WORD_RE = re.compile(r"^[A-Za-z][A-Za-z\-'. ]*$")
 PERSIAN_RE = re.compile(r"^[\u0600-\u06FF\s\u200c]+$")
+
+
 def normalize_en(word: str) -> str:
     w = word.lower()
     w = re.sub(r"[^a-z]", "", w)
     w = re.sub(r"(.)\1+", r"\1", w)
     return w
+
+
 def normalize_fa(word: str) -> str:
     w = word.replace("\u200c", "").replace(" ", "").strip()
     w = w.replace("ي", "ی").replace("ك", "ک")
     return w
+
+
 def is_latin(word: str) -> bool:
     return bool(LATIN_WORD_RE.match(word))
+
+
 def is_persian(word: str) -> bool:
     return bool(PERSIAN_RE.match(word))
+
+
 def english_skeleton(word: str) -> str:
     w = normalize_en(word)
     if not w:
@@ -73,6 +85,8 @@ def english_skeleton(word: str) -> str:
         if ch != skeleton[-1]:
             skeleton.append(ch)
     return "".join(skeleton)
+
+
 def persian_skeleton(word: str) -> str:
     w = normalize_fa(word)
     if not w:
@@ -118,12 +132,15 @@ def persian_skeleton(word: str) -> str:
     latin = "".join(out)
     latin = re.sub(r"(.)\1+", r"\1", latin)
     return latin
+
+
 def phonetic_similarity(en: str, fa: str) -> float:
     en_sk = english_skeleton(en)
     fa_sk = persian_skeleton(fa)
     if not en_sk or not fa_sk:
         return 0.0
     first = 1.0 if en_sk[0] == fa_sk[0] else 0.0
+
     def lcs(a, b):
         m, n = len(a), len(b)
         dp = [[0] * (n + 1) for _ in range(m + 1)]
@@ -134,6 +151,7 @@ def phonetic_similarity(en: str, fa: str) -> float:
                 else:
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
         return dp[m][n]
+
     lcs_len = lcs(en_sk, fa_sk)
     lcs_ratio = lcs_len / max(len(en_sk), len(fa_sk))
     len_ratio = min(len(en_sk), len(fa_sk)) / max(len(en_sk), len(fa_sk))
@@ -143,6 +161,8 @@ def phonetic_similarity(en: str, fa: str) -> float:
     score = 0.45 * first + 0.35 * lcs_ratio + 0.20 * len_ratio
     score = max(0.0, score - rare_penalty)
     return score
+
+
 PROGRAMMING_KEYWORDS = {
     "xor",
     "regex",
@@ -287,10 +307,16 @@ ABBREV_SUFFIXES = (
     "dept",
     "univ",
 )
+
+
 def is_programming_term(word: str) -> bool:
     return word.lower() in PROGRAMMING_KEYWORDS
+
+
 def is_roman_numeral(word: str) -> bool:
     return bool(ROMAN_NUMERAL_RE.match(word))
+
+
 def is_abbreviation(word: str) -> bool:
     w = word.lower().rstrip(".")
     if w in ABBREV_SUFFIXES:
@@ -300,8 +326,12 @@ def is_abbreviation(word: str) -> bool:
     if word.endswith(".") and len(word) <= 8:
         return True
     return False
+
+
 def looks_like_proper_noun(word: str) -> bool:
     return word[:1].isupper() and word[1:].islower() and word.isalpha()
+
+
 def is_likely_transliteration(en_word: str, fa_translation: str) -> bool:
     if not is_latin(en_word) or not is_persian(fa_translation):
         return False
@@ -318,6 +348,8 @@ def is_likely_transliteration(en_word: str, fa_translation: str) -> bool:
         return False
     score = phonetic_similarity(en, fa)
     return score >= 0.62
+
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python detect_transliterated.py input.json")
@@ -352,5 +384,7 @@ def main():
     print(f"Total entries: {total}")
     print(f"Transliterated: {len(transliterated)}  ->  {transliterated_path}")
     print(f"Cleaned       : {len(cleaned)}  ->  {cleaned_path}")
+
+
 if __name__ == "__main__":
     main()

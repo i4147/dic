@@ -2,6 +2,8 @@ import json
 import sys
 import os
 import re
+
+
 def is_transliteration(farsi_words):
     if not farsi_words:
         return False
@@ -18,6 +20,8 @@ def is_transliteration(farsi_words):
             if re.search(pattern, farsi):
                 return True
     return False
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python script.py <input_file.json>")
@@ -44,5 +48,7 @@ def main():
         json.dump(remaining, f, ensure_ascii=False, indent=2)
     print(f"Moved {moved_count} transliterated records to t.json")
     print(f"Remaining records in {input_file}: {len(remaining)}")
+
+
 if __name__ == "__main__":
     main()

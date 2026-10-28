@@ -1,1 +1,1 @@
-translator = Translator(service_urls=['translate.googleapis.com'], timeout=TIMEOUT)
+translator = Translator(service_urls=["translate.googleapis.com"], timeout=TIMEOUT)

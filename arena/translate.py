@@ -1,14 +1,22 @@
 """Apply curated batches, never guess missing translations. Stdlib only."""
+
 import argparse
 import json
 import os
 from pathlib import Path
 import unicodedata
+
 CATEGORIES = ("abbr", "names", "places", "verbs", "dic", "tl")
+
+
 def order(s):
     return s.casefold(), s
+
+
 def load(path, default):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else default
+
+
 def inputs(root):
     entries = {}
     skipped = 0
@@ -23,6 +31,8 @@ def inputs(root):
                 continue
             entries[word.casefold()] = word
     return entries, skipped
+
+
 def check_values(word, values):
     if not isinstance(values, list) or not values or len(values) != len(set(values)):
         raise ValueError(f"Invalid translation array: {word}")
@@ -35,8 +45,12 @@ def check_values(word, values):
             raise ValueError(f"Nonstandard Persian orthography: {word}")
         if not any("\u0600" <= c <= "\u06ff" for c in value) or any(c.isascii() and c.isalpha() for c in value):
             raise ValueError(f"Not Persian script: {word}")
+
+
 def dump(value):
     return json.dumps(value, ensure_ascii=False, indent=2) + "\n"
+
+
 def process(root, dry_run=False, allow_partial=False):
     source, skipped = inputs(root)
     cats = {c: load(root / f"{c}.json", {}) for c in CATEGORIES}
@@ -130,6 +144,8 @@ def process(root, dry_run=False, allow_partial=False):
         (root / "arena/report.json").write_text(dump(report), encoding="utf-8")
         (root / "arena/pending.json").write_text(dump(pending), encoding="utf-8")
     return 0 if report["complete"] or allow_partial else 1
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
